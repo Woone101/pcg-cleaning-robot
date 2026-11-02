@@ -314,6 +314,7 @@ var FOLLOW = ['รอดำเนินการ', 'กำลังแก้ไ�
 var MONTHS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 var MONTHS_FULL = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 var PERIOD_LABEL = { daily: 'รายวัน', weekly: '7 วัน', monthly: 'รายเดือน', yearly: 'รายปี' };
+var ROUNDS = ['08:00', '16:00', '24:00']; // รอบปกติของหุ่นยนต์ (ตรงกับ ROUNDS ใน Parser.gs)
 
 var DATA = [], generatedAt = '';
 var state = { period: 'daily', day: null, tmode: 'open' };
@@ -568,13 +569,8 @@ function niceTicks(max) {
   for (var v = 0; v < max + step; v += step) { out.push(Math.round(v)); if (v >= max) break; }
   return out;
 }
-function commonRounds() {
-  // รอบที่มีรายงานบ่อย (≥ 30% ของวันใน 14 วันล่าสุด) ถือเป็นรอบปกติของหุ่นยนต์
-  var t = todayBiz(), days = {}, cnt = {};
-  DATA.forEach(function (r) { if (r.day > t - 14) { days[r.day] = 1; cnt[r.round] = (cnt[r.round] || 0) + 1; } });
-  var n = Object.keys(days).length;
-  return Object.keys(cnt).filter(function (k) { return n && cnt[k] / n >= 0.3; });
-}
+function commonRounds() { return ROUNDS; }
+function toMin(hhmm) { var t = hhmm.split(':'); return (+t[0]) * 60 + (+t[1]); }
 
 // round × day grid (weekly / monthly); yearly shows last 31 days of the range
 function renderGrid(rg, rows) {
@@ -586,6 +582,7 @@ function renderGrid(rg, rows) {
   document.getElementById('roundsTitle').textContent = 'สถานะรายรอบ';
   document.getElementById('gridDesc').textContent = 'แต่ละช่อง = 1 รอบใน 1 วัน · ช่องเส้นประ = ไม่มีรายงาน' + (s > rg.s ? ' · แสดง 31 วันล่าสุดของช่วง' : '');
   var mins = {}, cell = {};
+  ROUNDS.forEach(function (rd) { mins[rd] = toMin(rd); }); // แสดงรอบปกติเสมอ แม้ยังไม่มีรายงาน
   rows.forEach(function (r) { if (r.day < s) return; mins[r.round] = r.min; cell[r.round + '|' + r.day] = r; });
   var list = Object.keys(mins).sort(function (a, b) { return roundKey(mins[a]) - roundKey(mins[b]); });
   if (!list.length) { el.innerHTML = '<div class="empty-msg">ยังไม่มีรายงานในช่วงนี้</div>'; return; }
@@ -741,10 +738,10 @@ function esc(s) {
 // ข้อมูลจำลอง ใช้เมื่อยังไม่ได้ตั้ง API_URL
 function demoData() {
   var out = [], seed = 7, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
-  var rounds = ['08:00', '12:00', '16:00', '20:00', '00:00'], names = ['สมชาย', 'สมศรี', 'วิชัย'], t = todayBiz();
+  var rounds = ROUNDS, names = ['สมชาย', 'สมศรี', 'วิชัย'], t = todayBiz();
   for (var d = t - 60; d <= t; d++) {
     rounds.forEach(function (rd, i) {
-      if (d === t && i > 1) return;
+      if (d === t && i > 0) return;
       var x = rnd(); if (x < 0.06) return;
       var bias = rd === '08:00' ? 0.15 : 0;
       var st = x < 0.14 + bias ? ST.MANUAL : x < 0.2 + bias ? ST.ISSUE : ST.NORMAL;
