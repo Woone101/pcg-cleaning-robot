@@ -6,7 +6,7 @@
 <title>Cleaning Robot Dashboard · PCG</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet" crossorigin="anonymous">
 <style>
   :root {
     --page: #eef1f5; --card: #ffffff; --ink: #1b2430; --ink-2: #5b6573; --muted: #8b94a1;
@@ -56,10 +56,10 @@
   .hero h1 { margin: 0; font-size: 36px; line-height: 1.15; font-weight: 700; letter-spacing: -.3px; }
   .hero p { margin: 6px 0 0; opacity: .9; font-weight: 500; }
   .hero .upd { font-size: 12.5px; opacity: .75; margin-top: 4px; }
-  .hero-robot { position: absolute; right: 330px; top: 0; height: 100%; width: auto; opacity: .95;
+  .hero-robot { position: absolute; right: 440px; top: 0; height: 100%; width: auto; opacity: .95;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 30%, #000 70%, transparent 100%);
     mask-image: linear-gradient(90deg, transparent 0, #000 30%, #000 70%, transparent 100%); }
-  .chips { margin-left: auto; display: flex; gap: 10px; z-index: 1; }
+  .chips { margin-left: auto; display: flex; gap: 10px; position: relative; z-index: 2; }
   .pill-box { background: rgba(6, 22, 80, .78); border: 1px solid rgba(255,255,255,.18); border-radius: 14px; padding: 12px 16px;
     min-width: 160px; }
   .pill-box small { display: block; font-size: 12px; opacity: .85; font-weight: 600; }
@@ -209,7 +209,7 @@
   .cap .hero h1 { font-size: 36px !important; }
   .cap .menu-btn { display: none !important; }
   .cap .hero-ic { display: grid !important; }
-  .cap .hero-robot { display: block !important; -webkit-mask-image: none; mask-image: none; }
+  .cap .hero-robot { display: block !important; }
   .cap .chips { margin: 0 0 0 auto !important; flex-wrap: nowrap !important; }
   .cap .ov-kpis { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; margin: 0; }
   .cap .ov-mtd { margin: 0; grid-template-columns: 1fr auto !important; }
@@ -217,23 +217,23 @@
   .cap .ov-mtd .tot { text-align: right !important; }
   .cap .ov-grid { grid-template-columns: 1.78fr .98fr !important; margin: 0; flex: 1; min-height: 0; }
   .cap .ov-grid > .ov-card { height: 100%; }
-  .cap .ov-rounds { padding-bottom: 16px; }
-  .cap .ov-rnd { padding: 9px 4px; }
   .cap .ov-slicer { display: none; }
   .cap-foot { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); flex: none; }
   .ov-slicer { margin-left: auto; flex: none; }
   .ov-slicer button.on { color: var(--blue-1); }
-  .ov-rounds { padding-bottom: 120px; }
-  .ov-rnd { display: grid; grid-template-columns: 64px 1fr; gap: 4px 12px; padding: 11px 4px; border-bottom: 1px solid var(--line); }
-  .ov-rnd:last-child { border-bottom: 0; }
-  .ov-rnd .t { font-size: 20px; font-weight: 800; grid-row: span 2; }
-  .ov-rnd .s { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
-  .ov-rnd .m { font-size: 12.5px; color: var(--ink-2); }
-  .ov-rnd .a { font-size: 12.5px; color: #0b7a6e; font-weight: 600; }
+  .ov-rnd-head, .ov-rnd { display: grid; grid-template-columns: 76px 1fr auto; gap: 12px; align-items: center; padding: 14px 6px;
+    border-bottom: 1px solid var(--line); }
+  .ov-rnd-head { padding: 8px 6px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); background: #f6f8fb; border-radius: 10px 10px 0 0; }
+  .ov-rnd-head span:last-child, .ov-rnd .a { text-align: right; }
+  .ov-rnd:last-of-type { border-bottom: 0; }
+  .ov-rnd .t { font-size: 22px; font-weight: 800; }
+  .ov-rnd .s .status { font-size: 13.5px; padding: 4px 12px; }
+  .ov-rnd .a { font-size: 17px; font-weight: 700; color: #0b7a6e; white-space: nowrap; }
+  .ov-rnd .a small { font-size: 12px; font-weight: 600; color: var(--ink-2); margin-left: 3px; }
+  .ov-rnd .a.none { color: var(--muted); font-weight: 600; }
   .ov-rnd.miss .t, .ov-rnd.miss .s { color: var(--muted); }
   .ov-sum { margin-top: 12px; border-radius: 16px; border: 1px solid #c9dcfb; background: #f3f8ff; padding: 10px 14px; font-size: 13.5px;
-    text-align: center; position: relative; z-index: 1; margin-right: 110px; }
-  .ov-mascot { position: absolute; right: 8px; bottom: 0; width: 140px; border-radius: 16px 16px 0 0; }
+    text-align: center; }
   @media (max-width: 1380px) { .ov-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hero-robot { display: none; } }
   @media (max-width: 1180px) { .ov-grid { grid-template-columns: 1fr; } }
   @media (max-width: 640px) { .ov-kpis { grid-template-columns: 1fr; } .ov-mtd { grid-template-columns: 1fr; } .ov-mtd .ov-bar, .ov-mtd .note { grid-column: 1; margin-left: 0; }
@@ -364,9 +364,8 @@
       <div class="ov-foot">ช่องที่ไม่มีข้อมูลนำเข้าแสดงเป็น "—" ไม่ได้แปลว่าเป็นผลงาน 0 ตร.ม.</div>
     </section>
     <section class="ov-card ov-rounds">
-      <div class="ov-title"><span class="ov-ic" style="background:#fde6e6;color:var(--critical)">!</span><div><h3>รายงานแต่ละรอบ</h3><div class="desc" style="margin:0" id="ovRoundsDate"></div></div></div>
+      <div class="ov-title"><span class="ov-ic" style="background:#fde6e6;color:var(--critical)">!</span><div><h3>รายงานการทำงานของ Robot</h3><div class="desc" style="margin:0" id="ovRoundsDate"></div></div></div>
       <div id="ovRounds"></div>
-      <img class="ov-mascot" alt="" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUEBAUEAwUFBAUGBgUGCA4JCAcHCBEMDQoOFBEVFBMRExMWGB8bFhceFxMTGyUcHiAhIyMjFRomKSYiKR8iIyL/2wBDAQYGBggHCBAJCRAiFhMWIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiL/wAARCACMAKQDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD7Ko6UfSkoAWoX/wBcP92peTUb/wCtH+7Uz+Fh1EFBpaMc1yliUGlzRQAlFLSFgASSAB1J7UAHGKyNd0u11S2iFxK8M0T7oZY/vq3t61aOoCRttlC9ye7Lwg/4EafYq07NdToFc/Kig52qPf3NE8LGvBwqq8WVCrKnJSg7NGRo+ix6XdT3cj3l5ezja08y8hfQVueeAPmSRfqlWs1BdXAt7ZpD1HAHqa0o4SjRhyU1ZCq1p1Zc03diJLG5wjgn0706sf7Le3ClyQGPI3HBHuPStCKciNFugY5cc56E+xp1KXLsSpFmikpRWQwopaQ0ALRUZLMfkGR60VoqUmTzIk2N/wA9Go2t2kb9KdRXSSMw3/PRvyFG0k5LtmnGinuIbt/2jRj/AGjTsUdKnlj2Hcbt/wBo0bD/AHjTs0fjRyx7BcguJUtoGlmkKovfH6D3qrFaSXuJb/Ii6pbZ6e7ep9qbbKdRvPtT82sLEW69mPQuf5CtSSRIonkkZVRAWZmOAoHUk0+VLZARS/u7VwgAAGABxipo0CRqq9FGK5hPH/hSZLgx+INMcW67pStwDsGQAT+JAq4fF+gp4gOitq1mNVWPzDaeaPMC4zkjtxz9K2eFrreD+5kKrB/aRukVTlTzr6JGGUjG8/XoKxbDx/4V1OS4Sx8QaZO1sN0oS5X5BnGT7Z4raF/ZefIouYPNBVWXzVyCRlQRngkdPWpnQq03acWn5oanGWzLZUde9QyAMpDAEehqUMDnaQccGmv61kWUMtA3yFjH3TqR9P8ACrSEPGGRyynoarzjHSoIpvJl3E/u2OHHoezf40cqfQRo7T/eNG3PUk07FFPliugriYooopgPpKDRmkMSoL2/tdOt/Ovp44Yum5zjJ9B61Pmvn/4meLpJtdntrdyPKdoUP9xVwGx6FmJyfRa9DLcBLHVvZrbqcGYY36pTUkrt6I9w03XNN1fzBpt5HM0f30Bwy/UGtDNfMPw51W7HxE0lI5XbzJfLYE5yhB3D6d/wr6fQZzmtc2y5YCsoJ3TVxZfi5Yqk5TVmnYSqOqystmIIiRLdOIVI7Z6n8BmrzAAEk4A5JrBMtxe6xaypFm2hV2B6AMRgfpmvMR3m5bxrFGscahUQBVA7Cue8c6dfar4SutN02whvhfgw3EUt0YMREHcQwBOelbqb8cuF9lp2UH3pGP1anRqOlUU101/qwTjzRcTxCD4VeKo9J0yyabRnt7KZrqOGWIfK0YIghd1UGRNxDknuKzl+DXiPSdYuL2OfTNbaSymV2uy0Es885UTb3HOAobaewwK+hEaNvunP/AqcYx7/AJ166z/FpvbXfTv+Jy/Uadup83w/Crxbp3h+wtY9P0u/s4dVjmbTBNGrC2jG5IzOVBdd/JB7AVm6l8N/HLz3Ws3VkZdVtLga08cDhxdXRkASFcdVjiUD6k4r6h2Ad2pNozwfzFax4jxKlzOMb+j+fXr167a3SJeAha12cd8NPDt54d8DWqaq0javfO15fmRyxEsh3FeegHTHtXaOPlNNy46bT+lMeUqD5kbAeo5FeJXrSr1JVJbt3OyEVCKiuhUmPWqpxkhvungj2qaV1bJUg/Smm0crlpArH+HbnFZoot2chktgGOXQ7GPrj/61WKzLVzbTS+f/AKt8HcOx6c1p44piCiiigRk6dqF1cS3ST+SxhfaGiB29ORz1rQLvjJxVTTrZLO0SJOcdWP8AEe5rE8Y+LrfwzbKhYC4kQyZxu2rnHA7kk4HbvXVGk69bkpLc5nUVKlz1GdIkzbxkDGfSvk3xxJs8aapE5w0dzIpB/wB8n+RFaWs/EXXLq4d7fULyBc8bZ8EfgABXm+t6he32oT313dSz3EzAytJgljjGcj2Ar7jJMnq4KcqlRrVHz2PxtPFcqSejPT/g4I5vifalsEwwSyD67cf1r6bNwVJxivi/4feJ4fCfjWz1e68ye08t45RGPmCsMZHrjrivsOznhvrSG5tZVlt50EkcinhlIyCPwryOKaEo4qNRr3WlZ/eejlNReycVvci1W5lFluUArvAK/wB4elea+JvGniu08XaDo2haLbyWupybJNRuJCwhCjc4Ea85CjjPFelRstzIZzzEpIiHr6t+Pb2+tUIdKiufG9pf7jmzt5cJ23OVXP5A/nXyraPZje2pk38mowWks0aXU5QZWKMfM57Aduv5VyL6n4v0u+jPibQ1j0+aRYxdWN15/kFjhfMGAcZIG4ZAr1fxH4j0zwn4Zvta1+5FtptlHvllIz3wAAOpJIAA6kivPvBfxo0jxbrWnWV1oes6IutRvJo9xqcSrHqCryQhVjhsc4PUdKm4yn4y8C6n4o0dV02/vNO1O3y0Escroj+qOFPQ9j2ryZfhz8YLcEwz3oI7LrHX82r69Xaw44ppUZ7V6OFzSrhocijGS81c5q2EhVfM216HzP4X8DfFea4MniDxVqOj2kbf6tZ1uJZB7dQPqTXpOs+Jv+EN0mKbU766YEiKIEGWa4fH3VUD5mPsK9RCrjoKxfEOoaFoOnPrniKa0tLbT1LfbLnA8oHg7T1yeBgcnpXPicXLEy5pRS8krGtKiqSsm36nm3h74tXmo6tDYalouqaVPcEi2Oo221Zsc4DA4DY7GvQU8RsUxNbj6o3+NYfhT4i+CfH97NZaJdrPe26iY2t3bSQS7O0irIoJX/aHrXVS6PZS52xlD6q1cxqYT+KtI/ty202a48nULkF4YXU5kA64PQ1sHVbdurrn1U1g3Xh1YfEFheJIf9FZiFYZyCMde1aRs4pOXjUn6VWjAkN7C5I8xSDV6yndrNOdwXKg+oFUFsoV6RqPwq1bsIGCdImOB6Kf8DT0Jdy95re1FLiinoRqRqVXAFfOXxh1aDUvFxayvEQW0IgZJFJ8xlJJIx0A6ZPU19HKoLDPTNfF3jKyvNI8batZ6okq3CXDtkgncjMSrD2INfT8MUYTxMpt6xWnz3/rzPIzeUlSUUtGzMmu7pesCSj1jk/oaxr2+B/1sckR9HXrVx75Y+WD8f7BrK1DUop1aMqSzcAbT1r7qTSWjPBhFt6ouWEDmzTeCDycHtzX1X8H7ma7+E1lbysT5c00Kt3EYbOP/HiK+WLebZAisctgZNe+fA3xql3F/wAIrLaLG9tHJPBcIxPmjdlgwPQ88EdhXz3EdOpUwPuq/K0/RWZ6eWSjHEavc9rMZCgIMKBgAdqj0dHfUL58H5VRAfzNTvKI4zmptKbOio8f+skJc/if8K/O3sfTpHjH7Vun6lffAG5OmxSSJZ30NxdrGCT5I3AnHoGKk+wz2r5b+C154q8d/FrwLpZ1C9vdO8N3AuEV23R2UCYLc9gcKoz6gV+hu2WQlHQsjDDK4yCO/Wq+k+HNG0COZNC0qw05J23SrZ2yRBz6naBk0k7lSjysh8S+MdC8HaFJqvibUoNOsEYL5sx+8x6KoHLH2AJrza6/aT8A2M1uNRn1e0huV3wz3GlTIki/3lyuSPcCn/F/4b2Xxr8Bm10HV7calo95J5EgfdF5y/JJFJjp0xnqCO9fGifAr4kXPix9BPh28a+gVWZ3mTyVjJIDiQtjadp6c8dKaSI1P0Y0DxLpHivQIdV8N6hBqGnz5CTwNkZHUEdQR3BwRXzL+2de6nB4U8JJbM62Bv5XmwMqZFVTHuHTu2M+9eqfBz4cw/Bb4a3sWu6tbyTTzG8v7gvst4DtC4UnsABljjJ9K77xH4X0Pxv4al0vxBZQajpd2obYx4PdXVhyDzwwOaQz4Y8F/E3xR8S/2lfAOo3cFpBe2hWzxYxsgeEBi5fJOePwHFfoIqjt0rzDwf8ACHwf8Mr6a88KaR5V9OhRry4laaRU/uqWJ2j1x17131reyNKEb5gfQdKTkr2NVRk48yJL5V3Kcd6rYHapr5suo96jjXfj5hVrYyHJHvVs1EUBBVhkHgirygKuB0qOVM8jg96dwIEvkiQJcF969wudw9aKXYPX9KKZNi1kAV8l/GOC5sPixqr3O7y7wRzwMehTaF4+hB/Ovqw3EZ7n8q5/xV4T0Hxppa2muwOxiJMM8XyyRE91P9Ohr2cmxywGI9pNXTVn/XyPOxtD6zS5U9VqfGL5k+Yk/nWVeRb7mBs8iTpmvdfEP7Pt1bWNzceG9b+2yopaOzuIQjyf7IcHGfwrwQCVbpxJHIZUJQhuNpBwR7HNfeUcfQxcW6Ur23PAlhqlB++jT2gLhfvHpXsHwA0WS68a3t6oZYLGyZDJjje5AA/IMfwryzwx4f1PxRrSafo0DXF05w7D7kK+rN0A/U19neB/B9r4K8LQ6baESTE+Zc3GMGaQ9T7AdAPSvI4hzGnRwzoL4p9Oy7nbluFlOqqj2RauiyExTcMfuns30qfQmYWphbgxMV/DOQau3RTEasisWcYDDP1rImSbT7sT2jbojw8Tensa/Ptz6W9jp9vFIUzzWfputWepLOLW5ila2kMU6o4JhcfwuP4T9a0gwIyCCPUUmmtwPE/F3gvxb4Qv9Z134Ya3FbWeq3H2rUNHvLIXEYmPDzRcgqT1Ze/WvPLD/hMrLxBN4jXx7cT65PGsUsc9in2F41JKx+SMFQCzHIIPJ9a+riN3Wsabwnok92biXTbYyk5J2dT7isKsar+B2PRwVfB001iKbl2af9feeQ2egeN/izYG28a6lpmneEWcC4stHt3STUADnaZJGJVCRzjr+te529tFbQRRQII4okCIi9FUDAH5UqRLEirGoVVGAAMACpAcVtFNLV6nFVlGU24Ky6ICqsORTPLSMEqoH0FPZgoyxwKoXN4M7U5z096ZmVL6Qbs9gaaPUdKZLG8gI2ncegYYpICyZhkOXTof7w9atJ2uK6vYvJLuTJ6jrSvKEAJHWqwFObLAe1FgH/aW7AflRVOS4hhfbI+G9MUUBoONFGKK6zkF6VyesfDzwprN899qGgWU127bpJAu0yH1OOprrKBVwqTp6wk0/J2JcYvdXKOjaVp2i2iwaPZW9pbjny4IwoP19a6GKVWXisgqVJaPnPVfWnLPgFlPTrXFUUua8tTrg01oWncTX8mOkShR9Tyf6Vk+KdXt/DnhTU9Yu8eVYwNLt/vN/Cv4sQPxq3aS7VaR/vSsW/wrx79onxCsHhPTdFifD305nlA/uR9M/wDAyP8AvmurAYZ4nEwpd3r6dfwM8RVVKnKfY+ZbLxDr+neIr3WdH1O7tNSkYyzTW8hHmMxyQR0bvwa9i8MftJ67ZIieI9Lt9TjxzcWjeRKfqv3SfwrymxsttoGYfNId5/p+lPk0yNjuXKOepXvX6DiMqw+JV5xX6/efN08bVp/Cz6m0b9o3wdqEsUV81/psjkDN3b5QH3dTx9cV6YfFOmqOZ1HfnIr4BntJYQTsEy99nB/LvXaad8SvEOl+CBpFtMoiU4gvJF3SQRY+4pP6E8joK+fxvDVmvqz9U/zuelh8139r+B9Y6h8UvCOlXTW2o69YW9wnLRO53L9QBxXOXvx+8B26ts1wSkdoLaR8/TgV8ewWF7qd8Et7O6u7iZiVAXc8h6k46mrkvhzWIDifSruD/rrE/wDQVtDhrDRsqlR3+SMpZrVesYqx71rv7T+iwIRouk6lfynhDPiBD/M15J4k+OfjXxGkkMN2mkWj8GLTl2sR6GQ/Ma5c6Ksbbpwxmx/EpXH0BqbRvD7a74q07SogR9qnSE49Cfm/QGu+lk2EwqdTlvbW71/4BjLH1qz5bnpXwij+J6W8WqaJfKdCLn/RtXuCYrkZ+bYMEj/eHf1r6ghuFvrWOSRDDNgFo92TG3cZ7/XvVK30uKxsYLW0jWO3t4xFEijAVVGAKhYPbyh0OCP1r5DF4v61U5uVL0/XuexSo+zja5srJMoxlH92GDQXmfgsqD/ZGT+tMt7hLiHcvDDhl9DUg5rlUIl88hqIqLhR7nPJNFPxiir0IDkdqKKXFACd6O3WlooASq8tsJLpZsuQFKtGpwG9KsmkzjpSauhp2dzLt9WstUtWn0y6huoVYozQsG2MDgqw6qQRjBr5S+L+tnX/AIs3NmjFrfT0S2JHYKMv/wCPMRR8WtA8RfDH4lXvibw1eXdlpetTGcXFsxCLKeXjkHTk5IyOQfauQs3muZ59Q1CTzb29czSuR1LHP9a+qyPLo06nt4yumtO55uYYjmhyWszutM0/wnd6bbm58TS2F8U/fQy2ZZI2yeAw6jGKvzeCtMbTrm8sfGmg3EVvE0rKS6OQATgKe9cFKiSdRz6g4qpLaLKhQu4U9a+glQrXvCo/uT/Q8qM4JWcfzLLuklr5igjcuQD1GabLAYkiQhCmRjB54FI4/dgYwMgAfiKkkXM0Y/3j/Ku1mJ6R8EIBP8WLR8E/Z7WaUexwoz/48a+pY5rlw3nwKSDwBIDkfjXw5YXV3pd6l3pt5cWdymcTW77GAPUZ9K7G3+KvjS1QBPEVzJj/AJ7Ij/0r5nOMnrYyuqtNrZLW/wCh6mCxsKFPkknv0PcfjPBaD4SahPJaQrciSMIxRdyEuOQR7ZrwP4QpHJ8YNKLgHY8rj6hOP51V8T/EXxJ4m0tbLW9T8+1WQSeUsSoCw6E464rE+H2tDSfitos0rbY2uvLY+zjH88VeHwNXB5bVozd5Pm29AniI18VGcVorfmfcDbSoAx0rOu7fdk1Ytn3xjJ6dabNco5MUCmWTvjoPqa+ETsfQ2uYkTyWtxvTn1HqK3o3EsaunRhkVSbSGmB+0sw3fwrwBVy24t1TYEKfKVXoMVpGakzOcbK5IfeinAGirMhuKKMUooAMUYpaSgAxSEU7tRQBn6vZ2l5oV9DqVvDc2jQOZIZ0DowAJ5B+lfDMT/KMcDHAFfdWrANoOog9Dayg/98GvhJPlOB0HFfVcNvSo/T9Ty8y+z8y6rnFPU1XjJqYV9WmeVYc55jHq4pWb/SEHop/pUb/ei/3xQ/8Ax9J/uH+Yo5hWJGbKkHoarsF9/wA6lYVXam2gRC6gHIHPrmqFzHIjx3EB2zRMGU+hByD+YrRNQsKxmk1Zlxdj67+GPjSD4i6NPJaxzQS2LJDcwyYBLlMlgR/Ce1ep2tjFaqNoBb1xXy5+zXdy2/jPXbSMgQTWSSsv+0r4B/KvqxelfmOZ4eOGxMqcdl+p9Xharq0lJ7kN0m6PPcVkP+7ugf4ZRg/UVut8yMD6Vh3fCqR1V1I/OuGLszeSuh9FKRyaK6zlP//Z">
     </section>
   </div>
 
@@ -750,15 +749,12 @@ function renderOvRounds(day) {
   var list = ROUNDS.slice();
   reps.forEach(function (r) { if (list.indexOf(r.round) < 0) list.push(r.round); });
   list.sort(function (a, b) { return roundKey(toMin(a)) - roundKey(toMin(b)); });
-  var c = count(reps), h = '';
+  var c = count(reps), h = '<div class="ov-rnd-head"><span>เวลา</span><span>สถานะ</span><span>พื้นที่ทำความสะอาด</span></div>';
   list.forEach(function (rd) {
     var r = by[rd], w = sumRuns(RUNS.filter(function (x) { return x.day === day && x.round === rd; }));
-    var area = w.count ? '<div class="a">🧹 ' + fmtInt(w.area) + ' ตร.ม. · ' + clock(w.sec) + ' ชม.</div>' : '';
-    h += r
-      ? '<div class="ov-rnd"><div class="t">' + rd + '</div><div class="s">' + statusPill(r.status) + '<span class="m">' +
-        (r.name ? 'โดย ' + esc(r.name) : '') + (r.reportedAt ? ' · ' + esc(r.reportedAt.split(' ')[1] || '') + ' น.' : '') + '</span></div>' +
-        '<div><div class="m">' + esc(r.text) + '</div>' + area + '</div></div>'
-      : '<div class="ov-rnd miss"><div class="t">' + rd + '</div><div class="s">❓ ยังไม่มีรายงาน</div><div>' + area + '</div></div>';
+    var area = w.count ? '<div class="a">' + fmtInt(w.area) + '<small>ตร.ม.</small></div>' : '<div class="a none">—</div>';
+    h += '<div class="ov-rnd' + (r ? '' : ' miss') + '"><div class="t">' + rd + '</div><div class="s">' +
+      (r ? statusPill(r.status) : '❓ ยังไม่มีรายงาน') + '</div>' + area + '</div>';
   });
   var msg = !reps.length ? 'ยังไม่มีรายงานในวันนี้'
     : c[ST.MANUAL] + c[ST.ISSUE] === 0 ? '<b>ทำงาน AUTO ปกติทุกรอบที่รายงาน ✓</b>'
@@ -1077,22 +1073,10 @@ function loadScript(url, globalName, errMsg) {
 function loadSheetJS() { return loadScript(SHEETJS_URL, 'XLSX', 'โหลดตัวอ่าน Excel ไม่สำเร็จ (เช็คอินเทอร์เน็ต)'); }
 
 // ---------- Capture ภาพภาพรวม 1920×1080 ----------
-var HTML2CANVAS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+// ใช้ html-to-image: ให้ browser วาดหน้าเว็บจริง (ผ่าน SVG foreignObject) ภาพจึงเหมือนในแอป ทั้งเงา สีไล่ ขอบจาง และฟอนต์
+var HTML_TO_IMAGE_URL = 'https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js';
 
-/** รูปหุ่นยนต์ที่ไล่จางขอบซ้าย-ขวาไว้ในตัวรูปเลย (html2canvas ไม่รองรับ CSS mask) */
-function fadedRobot(img) {
-  var c = document.createElement('canvas'), w = img.naturalWidth, h = img.naturalHeight;
-  c.width = w; c.height = h;
-  var g = c.getContext('2d');
-  g.drawImage(img, 0, 0);
-  g.globalCompositeOperation = 'destination-in';
-  var grad = g.createLinearGradient(0, 0, w, 0);
-  grad.addColorStop(0, 'rgba(0,0,0,0)'); grad.addColorStop(.3, '#000'); grad.addColorStop(.7, '#000'); grad.addColorStop(1, 'rgba(0,0,0,0)');
-  g.fillStyle = grad; g.fillRect(0, 0, w, h);
-  return c.toDataURL('image/png');
-}
-
-/** SVG ถูกวาดเป็นรูปแยก จึงต้องแทน var(--สี) ด้วยค่าจริง และกำหนดฟอนต์ในตัว SVG */
+/** แทน var(--สี) ในแอตทริบิวต์ของ SVG ด้วยค่าจริง (กันสีหายเวลา SVG ถูกคัดลอกไปวาดในภาพ) */
 function inlineSvgVars(svg) {
   var cs = getComputedStyle(document.documentElement);
   svg.setAttribute('font-family', 'Prompt, Tahoma, sans-serif');
@@ -1108,13 +1092,11 @@ function captureOverview() {
   var btn = document.getElementById('captureBtn'), label = btn.textContent;
   btn.disabled = true; btn.textContent = 'กำลังสร้างภาพ…';
   var cap = document.createElement('div');
-  loadScript(HTML2CANVAS_URL, 'html2canvas', 'โหลดตัวสร้างภาพไม่สำเร็จ (เช็คอินเทอร์เน็ต)').then(function () {
+  loadScript(HTML_TO_IMAGE_URL, 'htmlToImage', 'โหลดตัวสร้างภาพไม่สำเร็จ (เช็คอินเทอร์เน็ต)').then(function () {
     return document.fonts ? document.fonts.ready : null;
   }).then(function () {
     cap.className = 'cap';
     var hero = document.getElementById('overview').cloneNode(true);
-    var robot = document.querySelector('#overview .hero-robot');
-    hero.querySelector('.hero-robot').src = fadedRobot(robot);
     var grid = document.querySelector('.ov-grid').cloneNode(true), chart = grid.querySelector('#ovTrend');
     var foot = document.createElement('div');
     foot.className = 'cap-foot';
@@ -1130,11 +1112,11 @@ function captureOverview() {
     renderOvTrend(chart, state.day, SETTINGS.dailyTargetSqm || 0, state.trendDays,
       { w: Math.round(r.width), h: Math.max(240, Math.round(cr.bottom - r.top - 44)) });
     cap.querySelectorAll('svg').forEach(inlineSvgVars);
-    return html2canvas(cap, { width: 1920, height: 1080, scale: 1, backgroundColor: '#eef1f5', logging: false,
-      windowWidth: 1920, windowHeight: 1080 });
-  }).then(function (canvas) {
-    return new Promise(function (ok) { canvas.toBlob(ok, 'image/png'); });
+    // style: วาง clone ที่มุมซ้ายบนของภาพ (ตัวจริงถูกซ่อนไว้นอกจอ)
+    return htmlToImage.toBlob(cap, { width: 1920, height: 1080, pixelRatio: 1, backgroundColor: '#eef1f5',
+      style: { position: 'static', left: '0', top: '0' } });
   }).then(function (blob) {
+    if (!blob) throw new Error('สร้างไฟล์ภาพไม่ได้');
     var a = document.createElement('a'), d = ymd(state.day);
     a.href = URL.createObjectURL(blob);
     a.download = 'Cleaning-Robot-Dashboard_' + d.y + '-' + p2(d.m + 1) + '-' + p2(d.d) + '.png';
