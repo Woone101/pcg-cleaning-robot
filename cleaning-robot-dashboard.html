@@ -161,7 +161,29 @@
   .modal button { margin-top: 12px; width: 100%; border: 0; border-radius: 10px; padding: 10px; background: var(--blue-1); color: #fff;
     font-weight: 600; cursor: pointer; }
 
-  @media (max-width: 1180px) { .pair { grid-template-columns: 1fr; } }
+  /* ---------- robot output (Excel) + import ---------- */
+  .section.teal { background: #e6f7f5; border-color: #a8e0d8; }
+  .teal .sec-head { background: linear-gradient(90deg, #12a594, #0b7a6e); }
+  .section.green { background: #eaf6ea; border-color: #b9e0b9; }
+  .green .sec-head { background: linear-gradient(90deg, #2f9e44, #237a34); }
+  .kpis.four { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .kpis.four .kpi .v { font-size: 42px; white-space: nowrap; }
+  .rcard .work { margin-top: 6px; font-size: 13px; color: #0b7a6e; font-weight: 600; }
+  .drop { border: 2px dashed #8cc98c; border-radius: 16px; background: #fff; padding: 26px 18px; text-align: center; cursor: pointer;
+    transition: background .15s, border-color .15s; }
+  .drop.over { background: #f1fbf1; border-color: #2f9e44; }
+  .drop b { display: block; font-size: 17px; margin-bottom: 4px; }
+  .drop small { color: var(--ink-2); }
+  .imp-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+  .imp-btn { border: 0; background: #2f9e44; color: #fff; border-radius: 10px; padding: 10px 18px; font-weight: 600; cursor: pointer; }
+  .imp-btn:disabled { opacity: .5; cursor: default; }
+  .imp-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 14px; }
+  .imp-stats div { background: #f6faf6; border: 1px solid #d5ecd5; border-radius: 12px; padding: 10px 12px; }
+  .imp-stats b { display: block; font-size: 22px; }
+  .imp-stats span { font-size: 12.5px; color: var(--ink-2); }
+  .imp-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+  .imp-grid > .card + .card { margin-top: 0; }
+  @media (max-width: 1180px) { .pair { grid-template-columns: 1fr; } .imp-grid { grid-template-columns: 1fr; } }
   @media (max-width: 900px) {
     .side { transform: translateX(-100%); }
     .side.open { transform: none; }
@@ -200,10 +222,12 @@
   </div>
   <nav class="nav" id="nav">
     <a href="#overview" class="active"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span><span><b>ภาพรวม</b><small>Overview</small></span></a>
+    <a href="#work"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span><b>ผลงานหุ่นยนต์</b><small>Cleaning output</small></span></a>
     <a href="#trend"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></span><span><b>แนวโน้มสถานะ</b><small>Status trend</small></span></a>
     <a href="#rounds"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span><span><b>สถานะรายรอบ</b><small>Round status</small></span></a>
     <a href="#issues"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.01"/></svg></span><span><b>ติดตามปัญหา</b><small>Issue tracking</small></span></a>
     <a href="#reports"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span><span><b>รายงานทั้งหมด</b><small>All reports</small></span></a>
+    <a href="#import"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg></span><span><b>นำเข้า Excel</b><small>Import SIASUN</small></span></a>
   </nav>
   <div class="side-foot">
     <div id="dataRange">กำลังโหลดข้อมูล…</div>
@@ -244,6 +268,22 @@
       <div class="kpis" id="kpiIssue"></div>
     </section>
   </div>
+
+  <section class="section teal" id="work">
+    <div class="sec-head"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>ผลงานหุ่นยนต์ (จาก Excel SIASUN)<span class="right" id="workNote"></span></div>
+    <div class="kpis four" id="kpiWork"></div>
+    <div class="card" style="margin-top:16px">
+      <h3 id="areaTitle">พื้นที่ทำความสะอาด</h3>
+      <div class="desc" id="areaDesc"></div>
+      <div class="legend" id="areaLegend"></div>
+      <div class="chart" id="areaChart"></div>
+    </div>
+    <div class="card">
+      <h3>งานของหุ่นยนต์ในช่วงที่เลือก</h3>
+      <div class="desc">แต่ละงานจัดเข้ารอบจากเวลาเริ่ม ด้วยกติกาเดียวกับรายงานในไลน์</div>
+      <div class="tablewrap" id="runTable"></div>
+    </div>
+  </section>
 
   <section class="section plain" id="trend">
     <div class="sec-head"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></span><span id="trendTitle">แนวโน้มสถานะ</span></div>
@@ -286,6 +326,38 @@
     <div class="sec-head"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span>รายงานทั้งหมดในช่วงที่เลือก</div>
     <div class="card"><div class="tablewrap" id="allTable"></div></div>
   </section>
+
+  <section class="section green" id="import">
+    <div class="sec-head"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg></span>นำเข้าข้อมูล Excel จาก SIASUN<span class="right">ไฟล์จาก cloud.robot-clean.com</span></div>
+    <div class="imp-grid">
+      <div class="card">
+        <h3>1. เลือกไฟล์ Excel</h3>
+        <div class="desc">Export รายงานงาน (任务报告) จากเว็บ SIASUN แล้วลากไฟล์มาวาง หรือคลิกเพื่อเลือก (.xlsx / .xls ไม่เกิน 12 MB)</div>
+        <label class="drop" id="drop">
+          <b>ลากไฟล์ Excel มาวางที่นี่</b>
+          <small>หรือคลิกเพื่อเลือกไฟล์</small>
+          <input type="file" id="fileInput" accept=".xlsx,.xls,.xlsm" hidden>
+        </label>
+        <div id="impPreview"></div>
+        <div class="imp-row">
+          <button class="imp-btn" id="impBtn" disabled>ตรวจสอบและบันทึกเข้าระบบ</button>
+          <span class="desc" style="margin:0" id="impStatus"></span>
+        </div>
+        <div id="impResult"></div>
+      </div>
+      <div class="card">
+        <h3>หลักเกณฑ์</h3>
+        <div class="desc" style="margin-bottom:6px">
+          • นำเข้าไฟล์เดิมซ้ำได้ งานที่เคยบันทึกแล้วจะถูกข้าม (ตรวจจาก SN + เวลาเริ่ม + เวลาจบ + ชื่องาน)<br>
+          • งานถูกจัดเข้ารอบ 08:00 / 14:00 / 20:00 / 02:00 ที่ใกล้เวลาเริ่มที่สุด และตัดวันที่ 08:00<br>
+          • เวลาทำงานคำนวณจาก เวลาจบ − เวลาเริ่ม (ไม่ใช้คอลัมน์ 用时)<br>
+          • ไม่ได้เก็บไฟล์ Excel ต้นฉบับ เก็บเฉพาะข้อมูลที่แปลงแล้วในชีต Runs
+        </div>
+        <h3 style="margin-top:14px">ประวัติการนำเข้าล่าสุด</h3>
+        <div class="tablewrap" id="importLog"></div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <div class="tip" id="tip"></div>
@@ -317,6 +389,8 @@ var PERIOD_LABEL = { daily: 'รายวัน', weekly: '7 วัน', monthly
 var ROUNDS = ['08:00', '14:00', '20:00', '02:00']; // รอบปกติของหุ่นยนต์ (ตรงกับ ROUNDS ใน Parser.gs)
 
 var DATA = [], generatedAt = '';
+var RUNS = [], IMPORTS = [], SETTINGS = {};
+var SHEETJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
 var state = { period: 'daily', day: null, tmode: 'open' };
 
 // ---------- key ----------
@@ -350,6 +424,8 @@ document.getElementById('keyInput').addEventListener('keydown', function (e) { i
 function load() {
   if (!API_URL) {
     DATA = demoData().map(prep);
+    RUNS = demoRuns().map(prepRun);
+    IMPORTS = []; SETTINGS = { dailyTargetSqm: 18000 };
     generatedAt = '';
     notice('โหมดตัวอย่าง: แสดงข้อมูลจำลอง — วาง Web app URL ในตัวแปร API_URL ในไฟล์นี้เพื่อดูข้อมูลจริง');
     ready();
@@ -367,6 +443,9 @@ function load() {
         return;
       }
       DATA = d.rows.map(prep);
+      RUNS = (d.runs || []).map(prepRun);
+      IMPORTS = d.imports || [];
+      SETTINGS = d.settings || {};
       generatedAt = d.generatedAt || '';
       notice('');
       ready();
@@ -393,6 +472,15 @@ function prep(r) {
   return r;
 }
 
+function prepRun(r) {
+  r.round = normRound(r.round);
+  var p = r.date.split('/');
+  r.day = Date.UTC(+p[2], +p[1] - 1, +p[0]) / 864e5;
+  var t = r.round.split(':');
+  r.min = (+t[0]) * 60 + (+t[1]);
+  return r;
+}
+
 function ready() {
   var days = uniqueDays(), today = todayBiz();
   if (days.indexOf(today) < 0) days.unshift(today);
@@ -415,7 +503,7 @@ function dayLabel(day, withYear) { var x = ymd(day); return x.d + ' ' + MONTHS[x
 function roundKey(min) { return (min - 480 + 1440) % 1440; }
 function uniqueDays() {
   var seen = {}, out = [];
-  DATA.forEach(function (r) { if (!seen[r.day]) { seen[r.day] = 1; out.push(r.day); } });
+  DATA.concat(RUNS).forEach(function (r) { if (!seen[r.day]) { seen[r.day] = 1; out.push(r.day); } });
   return out.sort(function (a, b) { return b - a; });
 }
 function range() {
@@ -436,6 +524,8 @@ function render() {
     (days > 1 ? ' (' + days + ' วัน)' : '');
   renderKpis(rows);
   renderLegends();
+  renderWork(rg);
+  renderImportLog();
   renderTrend(rg, rows);
   renderGrid(rg, rows);
   renderByRound(rows);
@@ -500,13 +590,17 @@ function renderTrend(rg, rows) {
     var have = {}; list.forEach(function (r) { have[r.round] = 1; });
     var expected = commonRounds().filter(function (rd) { return !have[rd]; });
     if (!list.length && !expected.length) { el.innerHTML = '<div class="empty-msg">ยังไม่มีรายงานในวันนี้</div>'; return; }
+    var work = function (round) { // พื้นที่/เวลาจาก Excel ของรอบนี้
+      var w = sumRuns(RUNS.filter(function (x) { return x.day === rg.s && x.round === round; }));
+      return w.count ? '<div class="work">🧹 ' + fmtInt(w.area) + ' ตร.ม. · ' + clock(w.sec) + ' ชม.</div>' : '';
+    };
     var cards = list.map(function (r) {
       return { k: roundKey(r.min), h: '<div class="rcard" style="--rc:' + STYLE[r.status].color + '"><div class="time">' + r.round + '</div>' +
         statusPill(r.status) + '<div class="who">' + (r.name ? 'โดย ' + esc(r.name) : '') + (r.reportedAt ? ' · ' + esc(r.reportedAt.split(' ')[1] || '') + ' น.' : '') +
-        '</div><div class="msg">' + esc(r.text) + '</div></div>' };
+        '</div><div class="msg">' + esc(r.text) + '</div>' + work(r.round) + '</div>' };
     }).concat(expected.map(function (rd) {
       var t = rd.split(':');
-      return { k: roundKey(+t[0] * 60 + +t[1]), h: '<div class="rcard missing"><div class="time">' + rd + '</div>ยังไม่มีรายงาน</div>' };
+      return { k: roundKey(+t[0] * 60 + +t[1]), h: '<div class="rcard missing"><div class="time">' + rd + '</div>ยังไม่มีรายงาน' + work(rd) + '</div>' };
     })).sort(function (a, b) { return a.k - b.k; });
     el.innerHTML = '<div class="rounds">' + cards.map(function (c) { return c.h; }).join('') + '</div>';
     return;
@@ -651,6 +745,238 @@ function renderByRound(rows) {
   }, function (t, on) { t.setAttribute('fill', on ? 'rgba(31,99,218,0.06)' : 'transparent'); });
 }
 
+// ---------- robot output from Excel ----------
+function sumRuns(list) {
+  var t = { count: 0, area: 0, sec: 0, energy: 0, water: 0 };
+  list.forEach(function (r) { t.count++; t.area += r.area; t.sec += r.sec; t.energy += r.energy; t.water += r.water; });
+  return t;
+}
+function fmtInt(n) { return Math.round(n).toLocaleString('en-US'); }
+function clock(sec) { var m = Math.round(sec / 60); return Math.floor(m / 60) + ':' + (m % 60 < 10 ? '0' : '') + (m % 60); }
+
+function renderWork(rg) {
+  var runs = RUNS.filter(function (r) { return r.day >= rg.s && r.day <= rg.e; });
+  var w = sumRuns(runs), days = rg.e - rg.s + 1, target = (SETTINGS.dailyTargetSqm || 0) * days;
+  var eff = w.sec ? w.area / (w.sec / 3600) : 0;
+  document.getElementById('workNote').textContent = RUNS.length ? 'นำเข้าแล้ว ' + RUNS.length + ' งาน' : 'ยังไม่ได้นำเข้า Excel';
+  document.getElementById('kpiWork').innerHTML = [
+    kpi('พื้นที่ทำความสะอาด', w.count ? fmtInt(w.area) : '–', 'ตร.ม.',
+      target ? (w.count ? Math.round(w.area / target * 100) + '% ของเป้า ' + fmtInt(target) : 'เป้า ' + fmtInt(target)) : w.count + ' งาน',
+      '#12a594', '#dcf3ef', '▦', w.count && target && w.area < target ? 'var(--orange-2)' : '#0b7a6e'),
+    kpi('เวลาทำงาน', w.count ? clock(w.sec) : '–', 'ชม.', w.count + ' งาน', 'var(--blue-1)', '#e8f0fe', '⏱'),
+    kpi('ประสิทธิภาพ', w.count ? fmtInt(eff) : '–', 'ตร.ม./ชม.', 'พื้นที่ ÷ เวลาทำงาน', '#6735e7', '#ece6fd', '⚡'),
+    kpi('พลังงาน / น้ำ', w.count ? fmtInt(w.energy) : '–', 'kWh', w.count ? 'น้ำ ' + fmtInt(w.water) + ' ลิตร' : '', 'var(--orange-1)', '#ffecd2', '💧'),
+  ].join('');
+
+  // กราฟพื้นที่: รายวัน = แยกรอบ, สัปดาห์/เดือน = รายวัน, ปี = รายเดือน
+  var buckets = [], key, perTarget = 0, x0 = ymd(rg.e);
+  if (state.period === 'daily') {
+    document.getElementById('areaTitle').textContent = 'พื้นที่แยกตามรอบ · ' + rg.label;
+    ROUNDS.forEach(function (rd) { buckets.push({ id: rd, label: rd, full: 'รอบ ' + rd }); });
+    key = function (r) { return r.round; };
+  } else if (state.period === 'yearly') {
+    document.getElementById('areaTitle').textContent = 'พื้นที่รายเดือน · ' + rg.label;
+    for (var m = 0; m <= x0.m; m++) buckets.push({ id: m, label: MONTHS[m], full: MONTHS_FULL[m] + ' ' + (x0.y + 543) });
+    key = function (r) { return ymd(r.day).m; };
+  } else {
+    document.getElementById('areaTitle').textContent = 'พื้นที่รายวัน · ' + rg.label;
+    for (var d = rg.s; d <= rg.e; d++) buckets.push({ id: d, label: dayLabel(d), full: dayLabel(d, true) });
+    key = function (r) { return r.day; };
+    perTarget = SETTINGS.dailyTargetSqm || 0;
+  }
+  document.getElementById('areaDesc').textContent = runs.length
+    ? 'ตร.ม. ที่หุ่นยนต์รายงานใน Excel' + (perTarget ? ' · แท่งเขียว = ถึงเป้า ' + fmtInt(perTarget) + ' ตร.ม./วัน, ส้ม = ต่ำกว่าเป้า' : '') + ' · ช่องว่าง = ไม่มีข้อมูล'
+    : 'ยังไม่มีข้อมูลจาก Excel ในช่วงนี้ — นำเข้าได้ที่หัวข้อ "นำเข้า Excel" ด้านล่าง';
+  document.getElementById('areaLegend').innerHTML = perTarget
+    ? '<span><span class="sw" style="background:var(--good)"></span>ถึงเป้า</span><span><span class="sw" style="background:var(--orange-1)"></span>ต่ำกว่าเป้า</span><span><span class="sw" style="background:none;border-top:2px dashed var(--ink-2);height:0;border-radius:0"></span>เป้าหมาย</span>'
+    : '';
+  var by = {};
+  buckets.forEach(function (b) { by[b.id] = []; });
+  runs.forEach(function (r) { var k = key(r); if (by[k]) by[k].push(r); });
+  areaBars(document.getElementById('areaChart'), buckets, by, perTarget);
+  renderRunTable(runs);
+}
+
+function areaBars(el, buckets, by, target) {
+  if (!buckets.some(function (b) { return by[b.id].length; })) { el.innerHTML = '<div class="empty-msg">ไม่มีข้อมูลพื้นที่ในช่วงนี้</div>'; return; }
+  var sums = {};
+  buckets.forEach(function (b) { sums[b.id] = sumRuns(by[b.id]); });
+  var max = Math.max.apply(null, [target || 1].concat(buckets.map(function (b) { return sums[b.id].area; })));
+  var ticks = niceTicks(max), top = ticks[ticks.length - 1];
+  var W = width('areaChart'), H = 260, L = 54, R = 8, T = 12, B = 28;
+  var pw = W - L - R, ph = H - T - B, step = pw / buckets.length, bw = Math.max(3, Math.min(40, step * 0.62));
+  var y = function (v) { return T + ph - v / top * ph; }, svg = '';
+  ticks.forEach(function (t) {
+    svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(t) + '" y2="' + y(t) + '" stroke="var(--line)"/>' +
+      '<text x="' + (L - 8) + '" y="' + (y(t) + 4) + '" text-anchor="end" font-size="11.5" fill="var(--muted)">' + fmtInt(t) + '</text>';
+  });
+  var every = Math.ceil(buckets.length / Math.max(2, Math.floor(pw / 60)));
+  buckets.forEach(function (b, i) {
+    var cx = L + step * i + step / 2, s = sums[b.id];
+    if (s.count) {
+      var fill = target ? (s.area >= target ? 'var(--good)' : 'var(--orange-1)') : '#12a594';
+      svg += barPath(cx - bw / 2, y(s.area), bw, s.area / top * ph, Math.min(4, bw / 2), fill);
+    }
+    if (i % every === 0) svg += '<text x="' + cx + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11.5" fill="var(--muted)">' + b.label + '</text>';
+    svg += '<rect class="hit" data-i="' + i + '" x="' + (L + step * i) + '" y="' + T + '" width="' + step + '" height="' + ph + '" fill="transparent"/>';
+  });
+  if (target) svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(target) + '" y2="' + y(target) + '" stroke="var(--ink-2)" stroke-dasharray="5 4"/>' +
+    '<text x="' + (W - R) + '" y="' + (y(target) - 6) + '" text-anchor="end" font-size="11.5" fill="var(--ink-2)">เป้า ' + fmtInt(target) + '</text>';
+  svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + (T + ph) + '" y2="' + (T + ph) + '" stroke="var(--axis)"/>';
+  el.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="พื้นที่ทำความสะอาด">' + svg + '</svg>';
+  hover(el, '.hit', function (t) {
+    var b = buckets[+t.getAttribute('data-i')], s = sums[b.id];
+    if (!s.count) return '<b>' + b.full + '</b><span style="color:var(--muted)">ไม่มีข้อมูลจาก Excel</span>';
+    return '<b>' + b.full + '</b><div class="r"><span>พื้นที่</span><span>' + fmtInt(s.area) + ' ตร.ม.</span></div>' +
+      (target ? '<div class="r"><span>เทียบเป้า</span><span>' + Math.round(s.area / target * 100) + '%</span></div>' : '') +
+      '<div class="r"><span>เวลาทำงาน</span><span>' + clock(s.sec) + ' ชม.</span></div><div class="r"><span>จำนวนงาน</span><span>' + s.count + '</span></div>';
+  }, function (t, on) { t.setAttribute('fill', on ? 'rgba(18,165,148,0.08)' : 'transparent'); });
+}
+
+function renderRunTable(runs) {
+  var el = document.getElementById('runTable');
+  var list = runs.slice().sort(function (a, b) { return a.start < b.start ? 1 : -1; });
+  if (!list.length) { el.innerHTML = '<div class="empty-msg">ไม่มีงานในช่วงนี้</div>'; return; }
+  var h = '<table><thead><tr><th>วันที่</th><th>รอบ</th><th>งาน / โซน</th><th>หุ่นยนต์</th><th>เริ่ม – จบ</th><th>เวลา (ชม.)</th><th>พื้นที่ (ตร.ม.)</th><th>ไฟฟ้า (kWh)</th><th>น้ำ (ลิตร)</th></tr></thead><tbody>';
+  list.slice(0, 300).forEach(function (r) {
+    h += '<tr><td class="nw">' + dayLabel(r.day, true) + '</td><td class="nw">' + r.round + '</td><td>' + esc(r.task) + '</td><td class="nw">' + esc(r.robot) +
+      '</td><td class="nw">' + esc(r.start.slice(5, 16)) + ' – ' + esc(r.end.slice(11, 16)) + '</td><td class="nw">' + clock(r.sec) + '</td><td class="nw">' +
+      r.area.toLocaleString('en-US', { maximumFractionDigits: 2 }) + '</td><td class="nw">' + r.energy + '</td><td class="nw">' + r.water + '</td></tr>';
+  });
+  el.innerHTML = h + '</tbody></table>' + (list.length > 300 ? '<div class="desc">แสดง 300 งานล่าสุด จาก ' + list.length + '</div>' : '');
+}
+
+// ---------- import Excel ----------
+var importRows = [], importFile = '';
+var HEADER_MAP = [ // ชื่อหัวคอลัมน์ใน Excel ของ SIASUN (จีน) + ชื่อภาษาอังกฤษสำรอง
+  ['sn', ['sn', 'robotsn', 'serialnumber']],
+  ['name', ['机器人名称', 'robotname']],
+  ['task', ['任务名称', 'taskname']],
+  ['start', ['任务开始时间', 'starttime', 'taskstarttime']],
+  ['end', ['任务结束时间', 'endtime', 'taskendtime']],
+  ['area', ['清扫面积', 'cleaningarea', 'area']],
+  ['energy', ['用电量', 'powerconsumption', 'energy']],
+  ['water', ['用水量', 'waterconsumption', 'water']],
+  ['report', ['上报日期', 'reportdate']],
+];
+function normHead(h) { return String(h).replace(/\s|_/g, '').replace(/（/g, '(').replace(/）/g, ')').toLowerCase(); }
+function matchField(h) {
+  var n = normHead(h);
+  for (var i = 0; i < HEADER_MAP.length; i++) {
+    if (HEADER_MAP[i][1].some(function (k) { return n === k || n.indexOf(k + '(') === 0 || (k.length > 3 && n.indexOf(k) === 0); })) return HEADER_MAP[i][0];
+  }
+  return null;
+}
+function loadSheetJS() {
+  if (window.XLSX) return Promise.resolve();
+  return new Promise(function (ok, fail) {
+    var s = document.createElement('script');
+    s.src = SHEETJS_URL; s.onload = ok;
+    s.onerror = function () { fail(new Error('โหลดตัวอ่าน Excel ไม่สำเร็จ (เช็คอินเทอร์เน็ต)')); };
+    document.head.appendChild(s);
+  });
+}
+function p2(n) { return (n < 10 ? '0' : '') + n; }
+/** ค่าเวลาจาก Excel (serial number หรือข้อความ) -> "yyyy-mm-dd HH:mm:ss" */
+function excelTime(v) {
+  if (typeof v === 'number' && isFinite(v)) {
+    var secs = Math.round(v * 86400), c = XLSX.SSF.parse_date_code(Math.floor(secs / 86400)), s = secs % 86400;
+    if (!c) return '';
+    return c.y + '-' + p2(c.m) + '-' + p2(c.d) + ' ' + p2(Math.floor(s / 3600)) + ':' + p2(Math.floor(s % 3600 / 60)) + ':' + p2(s % 60);
+  }
+  var m = String(v || '').trim().match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})[ T]+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  return m ? m[1] + '-' + p2(+m[2]) + '-' + p2(+m[3]) + ' ' + p2(+m[4]) + ':' + m[5] + ':' + (m[6] || '00') : '';
+}
+function readExcel(file) {
+  var status = document.getElementById('impStatus'), btn = document.getElementById('impBtn');
+  document.getElementById('impResult').innerHTML = '';
+  btn.disabled = true; importRows = []; importFile = file.name;
+  if (file.size > 12 * 1024 * 1024) { status.textContent = 'ไฟล์ใหญ่เกิน 12 MB'; return; }
+  status.textContent = 'กำลังอ่านไฟล์…';
+  loadSheetJS().then(function () { return file.arrayBuffer(); }).then(function (buf) {
+    var wb = XLSX.read(buf, { type: 'array' });
+    var grid = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: true, defval: '' });
+    var hi = -1, cols = {};
+    for (var i = 0; i < Math.min(grid.length, 15) && hi < 0; i++) {
+      var c = {};
+      grid[i].forEach(function (h, j) { var f = matchField(h); if (f && !(f in c)) c[f] = j; });
+      if ('start' in c && 'end' in c && 'area' in c) { hi = i; cols = c; }
+    }
+    if (hi < 0) throw new Error('ไม่พบหัวคอลัมน์ของรายงาน SIASUN (ต้องมี 任务开始时间, 任务结束时间, 清扫面积)');
+    var get = function (row, f) { return f in cols ? row[cols[f]] : ''; };
+    grid.slice(hi + 1).forEach(function (row) {
+      if (!row.some(function (v) { return String(v).trim() !== ''; })) return;
+      importRows.push({ sn: String(get(row, 'sn')).trim(), name: String(get(row, 'name')).trim(), task: String(get(row, 'task')).trim(),
+        start: excelTime(get(row, 'start')), end: excelTime(get(row, 'end')), area: get(row, 'area'),
+        energy: get(row, 'energy'), water: get(row, 'water'), report: String(get(row, 'report')).trim() });
+    });
+    showPreview(file.name);
+  }).catch(function (e) { status.textContent = e.message; });
+}
+function showPreview(name) {
+  var status = document.getElementById('impStatus'), btn = document.getElementById('impBtn');
+  var ok = importRows.filter(function (r) { return r.start && r.end; });
+  var area = ok.reduce(function (s, r) { return s + (Number(String(r.area).replace(/,/g, '')) || 0); }, 0);
+  var starts = ok.map(function (r) { return r.start; }).sort();
+  var h = '<div class="imp-stats"><div><b>' + importRows.length + '</b><span>รายการในไฟล์</span></div>' +
+    '<div><b>' + fmtInt(area) + '</b><span>พื้นที่รวม (ตร.ม.)</span></div>' +
+    '<div><b style="font-size:15px">' + (starts.length ? esc(starts[0].slice(0, 10)) + '<br>' + esc(starts[starts.length - 1].slice(0, 10)) : '–') + '</b><span>ช่วงเวลาเริ่มงาน</span></div></div>';
+  h += '<div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>งาน</th><th>เริ่ม</th><th>จบ</th><th>พื้นที่</th></tr></thead><tbody>' +
+    importRows.slice(0, 5).map(function (r) {
+      return '<tr><td>' + esc(r.task) + '</td><td class="nw">' + (esc(r.start) || '<span class="saved err">อ่านไม่ได้</span>') + '</td><td class="nw">' +
+        (esc(r.end) || '<span class="saved err">อ่านไม่ได้</span>') + '</td><td class="nw">' + esc(r.area) + '</td></tr>';
+    }).join('') + '</tbody></table>' + (importRows.length > 5 ? '<div class="desc">ตัวอย่าง 5 จาก ' + importRows.length + ' รายการ</div>' : '') + '</div>';
+  document.getElementById('impPreview').innerHTML = h;
+  status.textContent = esc(name);
+  btn.disabled = !importRows.length;
+}
+function doImport() {
+  var btn = document.getElementById('impBtn'), status = document.getElementById('impStatus');
+  if (!importRows.length) return;
+  if (!API_URL) { document.getElementById('impResult').innerHTML = '<div class="notice" style="margin-top:12px">โหมดตัวอย่าง: อ่านไฟล์ได้ ' + importRows.length + ' รายการ แต่ยังไม่ได้บันทึก (ไม่ได้ตั้ง API_URL)</div>'; return; }
+  btn.disabled = true;
+  var total = { scanned: 0, inserted: 0, duplicates: 0, invalid: 0, warnings: [] }, size = 200, i = 0;
+  var next = function () {
+    if (i >= importRows.length) return finish();
+    status.textContent = 'กำลังบันทึก ' + Math.min(i + size, importRows.length) + ' / ' + importRows.length + '…';
+    var chunk = importRows.slice(i, i + size); i += size;
+    fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'importRuns', key: getKey(), fileName: importFile, rows: chunk }) })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.error) throw new Error(d.error);
+        ['scanned', 'inserted', 'duplicates', 'invalid'].forEach(function (k) { total[k] += d[k] || 0; });
+        total.warnings = total.warnings.concat(d.warnings || []).slice(0, 10);
+        next();
+      })
+      .catch(function (e) { status.textContent = 'บันทึกไม่สำเร็จ: ' + e.message; btn.disabled = false; finish(true); });
+  };
+  var finish = function (failed) {
+    document.getElementById('impResult').innerHTML = '<div class="imp-stats">' +
+      '<div><b style="color:#237a34">' + total.inserted + '</b><span>บันทึกใหม่</span></div>' +
+      '<div><b>' + total.duplicates + '</b><span>ซ้ำ (ข้าม)</span></div>' +
+      '<div><b style="color:' + (total.invalid ? 'var(--critical)' : 'inherit') + '">' + total.invalid + '</b><span>ผิดรูปแบบ</span></div></div>' +
+      (total.warnings.length ? '<div class="desc" style="margin-top:8px">' + total.warnings.map(esc).join('<br>') + '</div>' : '');
+    if (!failed) { status.textContent = 'นำเข้าเสร็จแล้ว'; importRows = []; load(); }
+  };
+  next();
+}
+function renderImportLog() {
+  var el = document.getElementById('importLog');
+  if (!IMPORTS.length) { el.innerHTML = '<div class="empty-msg">ยังไม่มีการนำเข้า</div>'; return; }
+  el.innerHTML = '<table><thead><tr><th>เวลา</th><th>ไฟล์</th><th>ใหม่</th><th>ซ้ำ</th><th>ผิด</th></tr></thead><tbody>' +
+    IMPORTS.map(function (x) {
+      return '<tr><td class="nw">' + esc(x.at) + '</td><td>' + esc(x.file) + '</td><td class="nw">' + x.inserted + '</td><td class="nw">' + x.duplicates + '</td><td class="nw">' + x.invalid + '</td></tr>';
+    }).join('') + '</tbody></table>';
+}
+(function () {
+  var drop = document.getElementById('drop'), input = document.getElementById('fileInput');
+  input.addEventListener('change', function () { if (input.files[0]) readExcel(input.files[0]); input.value = ''; });
+  ['dragenter', 'dragover'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+  ['dragleave', 'drop'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
+  drop.addEventListener('drop', function (e) { var f = e.dataTransfer.files[0]; if (f) readExcel(f); });
+  document.getElementById('impBtn').addEventListener('click', doImport);
+})();
+
 // ---------- tables ----------
 function sortDesc(a, b) { return b.day - a.day || roundKey(b.min) - roundKey(a.min); }
 function renderIssues(rows) {
@@ -758,6 +1084,23 @@ function demoData() {
       var txt = st === ST.NORMAL ? 'รอบ ' + rd + ' robot ทำงาน auto ปกติครับ' : st === ST.MANUAL ? 'รอบ ' + rd + ' robot ไม่ออก auto ต้องกด manual task ครับ' : 'รอบ ' + rd + ' robot ค้างกลางทาง ครับ';
       out.push({ row: out.length + 2, reportedAt: date + ' ' + rd.replace(':00', ':05'), date: date, round: rd, status: st, name: names[Math.floor(rnd() * 3)],
         text: txt, edited: '', msgId: 'demo' + out.length, follow: st === ST.NORMAL ? '' : d < t - 5 ? 'แก้ไขแล้ว' : d < t - 2 ? 'กำลังแก้ไข' : '', note: '' });
+    });
+  }
+  return out;
+}
+
+// งานจำลองจาก Excel (โหมดตัวอย่าง)
+function demoRuns() {
+  var out = [], seed = 11, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }, t = todayBiz();
+  for (var d = t - 60; d < t; d++) {
+    ROUNDS.forEach(function (rd) {
+      if (rnd() < 0.08) return;
+      var h = +rd.slice(0, 2), cal = h < 8 ? d + 1 : d, x = ymd(cal), dt = ymd(d);
+      var day = x.y + '-' + p2(x.m + 1) + '-' + p2(x.d), sec = Math.round((2.8 + rnd() * 1.2) * 3600);
+      var endH = h + Math.floor(sec / 3600), endM = Math.floor(sec % 3600 / 60);
+      out.push({ date: dt.d + '/' + (dt.m + 1) + '/' + dt.y, round: rd, robot: 'SIASUN-01', task: 'โซน ' + 'ABCD'.charAt(Math.floor(rnd() * 4)),
+        start: day + ' ' + rd + ':05', end: day + ' ' + p2(endH % 24) + ':' + p2(endM) + ':00', sec: sec,
+        area: Math.round(3800 + rnd() * 2600), energy: Math.round(8 + rnd() * 4), water: Math.round(40 + rnd() * 30) });
     });
   }
   return out;
