@@ -576,10 +576,25 @@ function normRound(s) {
   if ((h === 0 || h === 24) && m[2] === '00') return '24:00';
   return (h < 10 ? '0' : '') + h + ':' + m[2];
 }
+/** รอบที่ไม่อยู่ใน ROUNDS (บันทึกตอนใช้รอบชุดเก่า) -> รอบปัจจุบันที่ใกล้ที่สุด · คืน {day, round} */
+function snapRound(day, round) {
+  if (ROUNDS.indexOf(round) >= 0) return { day: day, round: round };
+  var m = toMin(round), t = day * 1440 + m + (m < 480 ? 1440 : 0), best = null, bd = Infinity;
+  [-1, 0, 1].forEach(function (off) {
+    ROUNDS.forEach(function (rd) {
+      var c = (Math.floor(t / 1440) + off) * 1440 + toMin(rd), d = Math.abs(c - t);
+      if (d < bd || (d === bd && c > best)) { bd = d; best = c; }
+    });
+  });
+  var bm = ((best % 1440) + 1440) % 1440;
+  return { day: Math.floor((best - 480) / 1440), round: (bm < 600 ? '0' : '') + Math.floor(bm / 60) + ':' + p2(bm % 60) };
+}
 function prep(r) {
   r.round = normRound(r.round);
   var p = r.date.split('/');
   r.day = Date.UTC(+p[2], +p[1] - 1, +p[0]) / 864e5;
+  var sr = snapRound(r.day, r.round);
+  r.day = sr.day; r.round = sr.round;
   var t = r.round.split(':');
   r.min = (+t[0]) * 60 + (+t[1]);
   r.problem = r.status !== ST.NORMAL;
