@@ -77,6 +77,11 @@
   .tabs button.on small { color: var(--blue-1); }
   .toolbar select { border: 1px solid var(--axis); border-radius: 12px; padding: 9px 14px; min-width: 210px; background: #fff;
     color: var(--ink); font-size: 16px; }
+  [hidden] { display: none !important; }
+  .custom-range { display: inline-flex; align-items: center; gap: 12px; }
+  .custom-range label { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; color: var(--ink-2); font-size: 14px; }
+  .custom-range input { border: 1px solid var(--axis); border-radius: 12px; padding: 8px 12px; background: #fff; color: var(--ink);
+    font-size: 15px; }
   .toolbar .info { margin-left: auto; color: var(--ink-2); font-size: 13.5px; }
   .toolbar button.ghost { border: 1px solid var(--axis); background: #fff; border-radius: 12px; padding: 8px 14px; cursor: pointer; }
   .toolbar button.ghost:hover { background: #f5f7fa; }
@@ -181,8 +186,8 @@
   .ov-bar { height: 10px; border-radius: 999px; background: #edf0f5; overflow: hidden; display: flex; }
   .ov-bar i { display: block; height: 100%; }
   .ov-k .ft { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--line); margin-top: 12px;
-    padding-top: 10px; font-size: 13px; color: var(--ink-2); }
-  .ov-k .ft b { color: var(--ink); white-space: nowrap; }
+    padding-top: 10px; font-size: 17px; font-weight: 500; color: var(--ink-2); align-items: baseline; }
+  .ov-k .ft b { color: var(--ink); white-space: nowrap; font-size: 20px; font-weight: 700; }
   .ov-split { display: flex; gap: 6px; margin: 12px 0 10px; }
   .ov-split div { flex: 1; border-radius: 12px; padding: 8px 6px; text-align: center; }
   .ov-split b { display: block; font-size: 28px; line-height: 1.1; font-weight: 800; }
@@ -234,7 +239,8 @@
   .ov-rnd.miss .t, .ov-rnd.miss .s { color: var(--muted); }
   .ov-sum { margin-top: 12px; border-radius: 16px; border: 1px solid #c9dcfb; background: #f3f8ff; padding: 10px 14px; font-size: 13.5px;
     text-align: center; }
-  @media (max-width: 1380px) { .ov-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hero-robot { display: none; } }
+  @media (max-width: 1600px) { .ov-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hero-robot { display: none; } }
+  @media (max-width: 1300px) { .hero { flex-wrap: wrap; } .chips { margin-left: 0; flex-wrap: wrap; } }
   @media (max-width: 1180px) { .ov-grid { grid-template-columns: 1fr; } }
   @media (max-width: 640px) { .ov-kpis { grid-template-columns: 1fr; } .ov-mtd { grid-template-columns: 1fr; } .ov-mtd .ov-bar, .ov-mtd .note { grid-column: 1; margin-left: 0; }
     .ov-mtd .tot { text-align: left; } .hero { flex-wrap: wrap; } .hero-ic { display: none; } .chips { margin-left: 0; flex-wrap: wrap; } }
@@ -278,7 +284,10 @@
   @media (max-width: 520px) {
     .kpis { grid-template-columns: 1fr; }
     .toolbar select { min-width: 0; width: 100%; }
-    .tabs { display: grid; grid-template-columns: repeat(4, 1fr); width: 100%; }
+    .tabs { display: grid; grid-template-columns: repeat(5, 1fr); width: 100%; }
+    .custom-range { width: 100%; flex-wrap: wrap; }
+    .custom-range label { flex: 1; }
+    .custom-range input { width: 100%; }
     .tabs button { padding: 6px 2px; font-size: 13px; white-space: nowrap; }
     .tabs button small { font-size: 9.5px; letter-spacing: .5px; }
   }
@@ -337,8 +346,13 @@
       <button data-p="weekly">รายสัปดาห์<small>WEEKLY</small></button>
       <button data-p="monthly">รายเดือน<small>MONTHLY</small></button>
       <button data-p="yearly">รายปี<small>YEARLY</small></button>
+      <button data-p="custom">กำหนดเอง<small>CUSTOM</small></button>
     </div>
     <select id="dateSel" aria-label="เลือกวันที่"></select>
+    <span class="custom-range" id="customRange" hidden>
+      <label>ตั้งแต่ <input type="date" id="dFrom"></label>
+      <label>ถึง <input type="date" id="dTo"></label>
+    </span>
     <button class="ghost" id="refresh">รีเฟรช</button>
     <button class="ghost cap-btn" id="captureBtn" title="บันทึกภาพหน้าภาพรวมขนาด 1920×1080">📷 Capture ภาพ</button>
     <span class="info" id="info"></span>
@@ -358,7 +372,8 @@
       <div class="legend" style="justify-content:center">
         <span><span class="sw" style="background:var(--good)"></span>ถึงเป้า</span>
         <span><span class="sw" style="background:var(--orange-1)"></span>ต่ำกว่าเป้า</span>
-        <span><span class="sw" style="background:none;height:3px;border-radius:2px;background:#2563eb"></span>% เทียบเป้าหมาย</span>
+        <span><span class="sw" style="background:none;height:3px;border-radius:2px;background:#2563eb"></span>% เทียบเป้าหมาย (แถบบน)</span>
+        <span><span class="sw" style="background:none;height:0;border-radius:0;border-top:2px dashed #8a93a3"></span>เส้นเป้าหมายรายวัน</span>
       </div>
       <div class="chart" id="ovTrend"></div>
       <div class="ov-foot">ช่องที่ไม่มีข้อมูลนำเข้าแสดงเป็น "—" ไม่ได้แปลว่าเป็นผลงาน 0 ตร.ม.</div>
@@ -449,7 +464,7 @@
         <h3>หลักเกณฑ์</h3>
         <div class="desc" style="margin-bottom:6px">
           • นำเข้าไฟล์เดิมซ้ำได้ งานที่เคยบันทึกแล้วจะถูกข้าม (ตรวจจาก SN + เวลาเริ่ม + เวลาจบ + ชื่องาน)<br>
-          • งานถูกจัดเข้ารอบ 08:00 / 14:00 / 20:00 / 02:00 ที่ใกล้เวลาเริ่มที่สุด และตัดวันที่ 08:00<br>
+          • งานถูกจัดเข้ารอบ 08:00 / 16:00 / 20:00 / 04:00 ที่ใกล้เวลาเริ่มที่สุด และตัดวันที่ 08:00<br>
           • เวลาทำงานคำนวณจาก เวลาจบ − เวลาเริ่ม (ไม่ใช้คอลัมน์ 用时)<br>
           • ไม่ได้เก็บไฟล์ Excel ต้นฉบับ เก็บเฉพาะข้อมูลที่แปลงแล้วในชีต Runs
         </div>
@@ -485,8 +500,8 @@ var STACK = [ST.ISSUE, ST.MANUAL, ST.NORMAL]; // ปัญหาอยู่ต�
 var FOLLOW = ['รอดำเนินการ', 'กำลังแก้ไข', 'แก้ไขแล้ว'];
 var MONTHS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 var MONTHS_FULL = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
-var PERIOD_LABEL = { daily: 'รายวัน', weekly: '7 วัน', monthly: 'รายเดือน', yearly: 'รายปี' };
-var ROUNDS = ['08:00', '14:00', '20:00', '02:00']; // รอบปกติของหุ่นยนต์ (ตรงกับ ROUNDS ใน Parser.gs)
+var PERIOD_LABEL = { daily: 'รายวัน', weekly: '7 วัน', monthly: 'รายเดือน', yearly: 'รายปี', custom: 'ช่วง' };
+var ROUNDS = ['08:00', '16:00', '20:00', '04:00']; // รอบปกติของหุ่นยนต์ (ตรงกับ ROUNDS ใน Parser.gs)
 
 var DATA = [], generatedAt = '';
 var RUNS = [], IMPORTS = [], SETTINGS = {};
@@ -589,6 +604,7 @@ function ready() {
   sel.innerHTML = days.map(function (d) { return '<option value="' + d + '">' + dayLabel(d, true) + (d === today ? ' (วันนี้)' : '') + '</option>'; }).join('');
   state.day = keep !== null && days.indexOf(keep) >= 0 ? keep : today;
   sel.value = state.day;
+  if (state.period === 'custom') syncCustomInputs();
   if (DATA.length) {
     var min = Math.min.apply(null, DATA.map(function (r) { return r.day; })), max = Math.max.apply(null, DATA.map(function (r) { return r.day; }));
     document.getElementById('dataRange').textContent = 'ข้อมูล ' + dayLabel(min, true) + ' – ' + dayLabel(max, true);
@@ -608,6 +624,10 @@ function uniqueDays() {
 }
 function range() {
   var d = state.day, x = ymd(d);
+  if (state.period === 'custom' && state.custom) {
+    var c = state.custom;
+    return { s: c.s, e: c.e, label: c.s === c.e ? dayLabel(c.e, true) : dayLabel(c.s, ymd(c.s).y !== ymd(c.e).y) + ' – ' + dayLabel(c.e, true) };
+  }
   if (state.period === 'daily') return { s: d, e: d, label: dayLabel(d, true) };
   if (state.period === 'weekly') return { s: d - 6, e: d, label: dayLabel(d - 6) + ' – ' + dayLabel(d, true) };
   if (state.period === 'monthly') return { s: Date.UTC(x.y, x.m, 1) / 864e5, e: d, label: MONTHS_FULL[x.m] + ' ' + (x.y + 543) };
@@ -690,48 +710,77 @@ function renderOverview(rg, rows) {
 /** กราฟพื้นที่ n วันล่าสุด (แท่ง) + % เทียบเป้า (เส้น) · size = {w, h} ใช้ตอน Capture */
 function renderOvTrend(el, endDay, dt, n, size) {
   var pts = [];
-  document.getElementById('ovTrendTitle').textContent = 'Trend พื้นที่ทำความสะอาด (ตร.ม.) เทียบเป้าหมาย (' + n + ' วัน)';
+  if (el.id === 'ovTrend') document.getElementById('ovTrendTitle').textContent = 'Trend พื้นที่ทำความสะอาด (ตร.ม.) เทียบเป้าหมาย (' + n + ' วัน)';
   for (var d = endDay - n + 1; d <= endDay; d++) {
     var s = sumRuns(RUNS.filter(function (r) { return r.day === d; }));
     pts.push({ day: d, has: s.count > 0, area: s.area, sec: s.sec, count: s.count, pct: dt && s.count ? s.area / dt * 100 : null });
   }
-  var max = Math.max.apply(null, [dt || 1].concat(pts.map(function (p) { return p.area; }))) * 1.12;
-  var ticks = niceTicks(max), top = ticks[ticks.length - 1];
-  var W = size ? size.w : Math.max(280, el.clientWidth), H = size ? size.h : 340, L = 58, R = dt ? 50 : 12, T = 44, B = 30;
-  var pw = W - L - R, ph = H - T - B, step = pw / pts.length, bw = Math.max(5, Math.min(72, step * 0.58));
-  var showPill = step >= 46, showVal = bw >= 44, every = Math.ceil(pts.length / Math.max(2, Math.floor(pw / 52)));
-  var y = function (v) { return T + ph - v / top * ph; }, svg = '';
+  // โครง: แถบบน = เส้น % เทียบเป้า (สเกลของตัวเอง), แถบล่าง = แท่งพื้นที่ (ตัวเลขอยู่เหนือแท่ง) — สองส่วนไม่ทับกัน
+  var W = size ? size.w : Math.max(280, el.clientWidth), H = size ? size.h : 400, L = 58, R = 16, T = 8, B = 30;
+  var pw = W - L - R, step = pw / pts.length, bw = Math.max(5, Math.min(72, step * 0.58));
+  // ความหนาแน่นของป้าย: full = ตัวเลขเต็ม + ป้าย % (7 วัน), mid = ย่อเป็น k (15 วัน), thin = ย่อเป็น k แนวตั้ง (30 วัน)
+  var mode = step >= 70 ? 'full' : step >= 34 ? 'mid' : 'thin';
+  var every = Math.ceil(pts.length / Math.max(2, Math.floor(pw / 52)));
+  var data = pts.filter(function (p) { return p.has; }), hasLine = !!dt && data.length > 0;
+  var lineTop = T + (mode === 'full' ? 36 : 18), lineH = hasLine ? Math.round((H - T - B) * 0.22) : 0;
+  var barTop = hasLine ? lineTop + lineH + 26 : T + 10, bph = H - B - barTop;
+  var head = mode === 'thin' ? 42 : 24; // ที่ว่างเหนือแท่งสูงสุดสำหรับตัวเลข
+  var maxArea = Math.max.apply(null, [dt || 1].concat(pts.map(function (p) { return p.area; })));
+  var ticks = niceTicks(maxArea * bph / (bph - head)), top = ticks[ticks.length - 1];
+  var yb = function (v) { return barTop + bph - v / top * bph; }, svg = '';
+
+  // ----- แถบเส้น % -----
+  if (hasLine) {
+    var pv = data.map(function (p) { return p.pct; });
+    var lo = Math.min.apply(null, pv.concat(100)), hi = Math.max.apply(null, pv.concat(100)), pad = Math.max(5, (hi - lo) * 0.08);
+    lo -= pad; hi += pad;
+    var yl = function (v) { return lineTop + lineH - (v - lo) / (hi - lo) * lineH; };
+    svg += '<rect x="' + L + '" y="' + (lineTop - (mode === 'full' ? 34 : 16)) + '" width="' + pw + '" height="' + (lineH + (mode === 'full' ? 44 : 26)) + '" rx="10" fill="#f5f8ff"/>' +
+      '<text x="' + (L - 10) + '" y="' + (lineTop - (mode === 'full' ? 18 : 2)) + '" text-anchor="end" font-size="11" font-weight="600" fill="#2563eb">% เป้า</text>' +
+      '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yl(100) + '" y2="' + yl(100) + '" stroke="#93b4f5" stroke-dasharray="5 4"/>' +
+      '<text x="' + (L - 10) + '" y="' + (yl(100) + 4) + '" text-anchor="end" font-size="11.5" fill="#5b7fc7">100%</text>';
+    var line = '', pen = false, dots = '';
+    pts.forEach(function (p, i) {
+      var cx = L + step * i + step / 2;
+      if (!p.has) { pen = false; return; }
+      var ly = yl(p.pct), lbl = Math.round(p.pct) + '%';
+      line += (pen ? 'L' : 'M') + cx + ' ' + ly; pen = true;
+      dots += '<circle cx="' + cx + '" cy="' + ly + '" r="' + (mode === 'thin' ? 3.5 : 5) + '" fill="#fff" stroke="#2563eb" stroke-width="2.5"/>';
+      if (mode === 'full') {
+        var lw = lbl.length * 8 + 14;
+        dots += '<rect x="' + (cx - lw / 2) + '" y="' + (ly - 34) + '" width="' + lw + '" height="24" rx="6" fill="#fff" stroke="#93b4f5"/>' +
+          '<text x="' + cx + '" y="' + (ly - 17.5) + '" text-anchor="middle" font-size="13" font-weight="700" fill="#1442a8">' + lbl + '</text>';
+      } else {
+        dots += '<text x="' + cx + '" y="' + (ly - 8) + '" text-anchor="middle" font-size="' + (mode === 'mid' ? 11.5 : 10) + '" font-weight="700" fill="#1442a8">' + lbl + '</text>';
+      }
+    });
+    svg += '<path d="' + line + '" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>' + dots;
+  }
+
+  // ----- แถบแท่งพื้นที่ -----
   ticks.forEach(function (t) {
-    svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y(t) + '" y2="' + y(t) + '" stroke="var(--line)" stroke-dasharray="4 4"/>' +
-      '<text x="' + (L - 10) + '" y="' + (y(t) + 4) + '" text-anchor="end" font-size="12.5" fill="var(--ink-2)">' + fmtInt(t) + '</text>' +
-      (dt ? '<text x="' + (W - R + 10) + '" y="' + (y(t) + 4) + '" font-size="12.5" fill="var(--ink-2)">' + Math.round(t / dt * 100) + '%</text>' : '');
+    svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yb(t) + '" y2="' + yb(t) + '" stroke="var(--line)" stroke-dasharray="4 4"/>' +
+      '<text x="' + (L - 10) + '" y="' + (yb(t) + 4) + '" text-anchor="end" font-size="12.5" fill="var(--ink-2)">' + (mode === 'full' ? fmtInt(t) : fmtK(t)) + '</text>';
   });
-  svg += '<text x="' + (L - 10) + '" y="' + (T - 22) + '" text-anchor="end" font-size="12" fill="var(--muted)">ตร.ม.</text>' +
-    (dt ? '<text x="' + (W - R + 10) + '" y="' + (T - 22) + '" font-size="12" fill="var(--muted)">%</text>' : '');
-  var line = '', pen = false, dots = '';
   pts.forEach(function (p, i) {
-    var cx = L + step * i + step / 2, by = y(p.area);
+    var cx = L + step * i + step / 2;
     if (p.has) {
-      var fill = dt ? (p.area >= dt ? 'var(--good)' : 'var(--orange-1)') : '#12a594', bh = p.area / top * ph;
-      svg += barPath(cx - bw / 2, by, bw, bh, Math.min(6, bw / 2), fill);
-      var inside = bh > 44; // ค่าพื้นที่อยู่ในแท่ง ใต้จุด % (ไม่ทับกัน)
-      if (showVal) svg += '<text x="' + cx + '" y="' + (inside ? by + 30 : dt ? by - 64 : by - 8) + '" text-anchor="middle" font-size="13" font-weight="700" fill="' + (inside ? '#fff' : 'var(--ink)') + '">' + fmtInt(p.area) + '</text>';
-      if (dt) {
-        line += (pen ? 'L' : 'M') + cx + ' ' + by; pen = true;
-        var lbl = Math.round(p.pct) + '%', lw = lbl.length * 8 + 14, ly = Math.max(4, by - 50);
-        dots += '<circle cx="' + cx + '" cy="' + by + '" r="' + (showPill ? 5.5 : 3.5) + '" fill="#fff" stroke="#2563eb" stroke-width="2.5"/>' + (showPill ?
-          '<rect x="' + (cx - lw / 2) + '" y="' + ly + '" width="' + lw + '" height="24" rx="6" fill="#fff" stroke="#93b4f5"/>' +
-          '<text x="' + cx + '" y="' + (ly + 16.5) + '" text-anchor="middle" font-size="13" font-weight="700" fill="#1442a8">' + lbl + '</text>' : '');
+      var by = yb(p.area), fill = dt ? (p.area >= dt ? 'var(--good)' : 'var(--orange-1)') : '#12a594';
+      svg += barPath(cx - bw / 2, by, bw, p.area / top * bph, Math.min(6, bw / 2), fill);
+      if (mode === 'thin') { // แนวตั้งเหนือแท่ง อ่านจากล่างขึ้นบน
+        svg += '<text x="' + (cx + 4) + '" y="' + (by - 5) + '" transform="rotate(-90 ' + (cx + 4) + ' ' + (by - 5) + ')" font-size="11" font-weight="700" fill="var(--ink)">' + fmtK(p.area) + '</text>';
+      } else {
+        svg += '<text x="' + cx + '" y="' + (by - 7) + '" text-anchor="middle" font-size="' + (mode === 'full' ? 13.5 : 12) + '" font-weight="700" fill="var(--ink)">' +
+          (mode === 'full' ? fmtInt(p.area) : fmtK(p.area)) + '</text>';
       }
     } else {
-      pen = false;
-      svg += '<text x="' + cx + '" y="' + (T + ph - 8) + '" text-anchor="middle" font-size="16" fill="var(--muted)">—</text>';
+      svg += '<text x="' + cx + '" y="' + (barTop + bph - 8) + '" text-anchor="middle" font-size="16" fill="var(--muted)">—</text>';
     }
     if ((pts.length - 1 - i) % every === 0) svg += '<text x="' + cx + '" y="' + (H - 8) + '" text-anchor="middle" font-size="13" fill="var(--ink-2)">' + ddmm(p.day) + '</text>';
-    svg += '<rect class="hit" data-i="' + i + '" x="' + (L + step * i) + '" y="' + T + '" width="' + step + '" height="' + ph + '" fill="transparent"/>';
+    svg += '<rect class="hit" data-i="' + i + '" x="' + (L + step * i) + '" y="' + T + '" width="' + step + '" height="' + (H - B - T) + '" fill="transparent"/>';
   });
-  if (line) svg += '<path d="' + line + '" fill="none" stroke="#2563eb" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>';
-  svg += dots + '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + (T + ph) + '" y2="' + (T + ph) + '" stroke="var(--axis)"/>';
+  if (dt) svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yb(dt) + '" y2="' + yb(dt) + '" stroke="var(--ink-2)" stroke-dasharray="6 4" stroke-opacity=".55"/>';
+  svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + (barTop + bph) + '" y2="' + (barTop + bph) + '" stroke="var(--axis)"/>';
   el.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Trend พื้นที่ทำความสะอาด 7 วัน">' + svg + '</svg>';
   hover(el, '.hit', function (t) {
     var p = pts[+t.getAttribute('data-i')];
@@ -955,6 +1004,8 @@ function sumRuns(list) {
   return t;
 }
 function fmtInt(n) { return Math.round(n).toLocaleString('en-US'); }
+/** ย่อเลขยาว: 27124 -> "27.1k", 950 -> "950" */
+function fmtK(n) { return n >= 1000 ? (Math.round(n / 100) / 10).toFixed(1) + 'k' : String(Math.round(n)); }
 function clock(sec) { var m = Math.round(sec / 60); return Math.floor(m / 60) + ':' + (m % 60 < 10 ? '0' : '') + (m % 60); }
 
 function renderWork(rg) {
@@ -1295,7 +1346,34 @@ function hover(el, sel, html, highlight) {
 document.getElementById('tabs').addEventListener('click', function (e) {
   var b = e.target.closest('button'); if (!b) return;
   this.querySelectorAll('button').forEach(function (x) { x.classList.toggle('on', x === b); });
-  state.period = b.getAttribute('data-p'); render();
+  state.period = b.getAttribute('data-p');
+  if (state.period === 'custom' && !state.custom) state.custom = { s: state.day - 6, e: state.day };
+  syncCustomInputs();
+  render();
+});
+
+// ---------- ช่วงวันที่กำหนดเอง ----------
+function isoOf(day) { return new Date(day * 864e5).toISOString().slice(0, 10); }
+function dayOfIso(v) { var t = Date.parse(v); return isNaN(t) ? null : Math.floor(t / 864e5); }
+function syncCustomInputs() {
+  var custom = state.period === 'custom';
+  document.getElementById('customRange').hidden = !custom;
+  document.getElementById('dateSel').hidden = custom;
+  if (!custom) return;
+  var days = uniqueDays(), lo = days.length ? days[days.length - 1] : todayBiz(), f = document.getElementById('dFrom'), t = document.getElementById('dTo');
+  [f, t].forEach(function (i) { i.min = isoOf(lo); i.max = isoOf(todayBiz()); });
+  f.value = isoOf(state.custom.s); t.value = isoOf(state.custom.e);
+  state.day = state.custom.e; // ภาพรวม (MTD / รายงานรอบ / Trend) อิงวันสุดท้ายของช่วง
+}
+['dFrom', 'dTo'].forEach(function (id) {
+  document.getElementById(id).addEventListener('change', function () {
+    var s = dayOfIso(document.getElementById('dFrom').value), e = dayOfIso(document.getElementById('dTo').value);
+    if (s === null || e === null) return;
+    if (s > e) { var x = s; s = e; e = x; }
+    state.custom = { s: s, e: e };
+    syncCustomInputs();
+    render();
+  });
 });
 document.getElementById('trendDays').addEventListener('click', function (e) {
   var b = e.target.closest('button'); if (!b) return;
